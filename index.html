@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STAR Pizzeria Garrel – Pizza · Grill · Döner · Pasta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #c9a84c; --gold-light: #e8c96a; --gold-dim: #7a6530;
+  --black: #080808; --dark: #111; --dark2: #181818; --dark3: #202020; --white: #f2ede4;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:'Lato',sans-serif;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;mix-blend-mode:overlay}
+
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-36px);transition:opacity .7s ease,transform .7s ease}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(36px);transition:opacity .7s ease,transform .7s ease}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:18px 52px;background:linear-gradient(to bottom,rgba(8,8,8,.97) 55%,transparent);transition:background .3s}
+nav.scrolled{background:rgba(8,8,8,.98);box-shadow:0 1px 0 rgba(201,168,76,.1)}
+.nav-logo{font-family:'Cinzel Decorative',serif;font-size:1.3rem;color:var(--gold);letter-spacing:.18em;text-decoration:none}
+.nav-links{display:flex;gap:34px;list-style:none}
+.nav-links a{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--white);opacity:.6;text-decoration:none;transition:color .25s,opacity .25s}
+.nav-links a:hover{color:var(--gold);opacity:1}
+.nav-phone{font-family:'Cinzel',serif;font-size:.67rem;letter-spacing:.12em;color:var(--gold);text-decoration:none;border:1px solid var(--gold-dim);padding:8px 18px;border-radius:2px;transition:border-color .25s}
+.nav-phone:hover{border-color:var(--gold)}
+
+.hero{height:100vh;min-height:700px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
+.hero-glow{position:absolute;inset:0;background:radial-gradient(ellipse 55% 55% at 50% 38%,rgba(201,168,76,.14) 0%,transparent 65%),radial-gradient(ellipse 70% 40% at 50% 90%,rgba(158,26,26,.09) 0%,transparent 60%);z-index:0}
+.hero-particles{position:absolute;inset:0;z-index:0;overflow:hidden}
+.particle{position:absolute;width:2px;height:2px;background:var(--gold);border-radius:50%;opacity:0;animation:float linear infinite}
+@keyframes float{0%{opacity:0;transform:translateY(0) scale(1)}10%{opacity:.6}90%{opacity:.2}100%{opacity:0;transform:translateY(-100vh) scale(.3)}}
+.hero-ring{position:absolute;width:600px;height:600px;top:50%;left:50%;transform:translate(-50%,-56%);z-index:0;opacity:.05;animation:spin 90s linear infinite}
+@keyframes spin{to{transform:translate(-50%,-56%) rotate(360deg)}}
+.hero-content{position:relative;z-index:2}
+.hero-star{width:92px;margin-bottom:20px;animation:heroFadeUp .9s ease .1s both;filter:drop-shadow(0 0 20px rgba(201,168,76,.4))}
+.hero h1{font-family:'Cinzel Decorative',serif;font-size:clamp(3.8rem,11vw,7.5rem);font-weight:900;color:var(--gold);letter-spacing:.09em;line-height:.88;text-shadow:0 0 120px rgba(201,168,76,.35);animation:heroFadeUp .9s ease .2s both}
+.hero-cats{font-family:'Cinzel',serif;font-size:clamp(.6rem,1.4vw,.82rem);letter-spacing:.42em;color:var(--white);opacity:.55;text-transform:uppercase;margin-top:20px;animation:heroFadeUp .9s ease .3s both}
+.hero-cats em{color:var(--gold-dim);font-style:normal;margin:0 10px}
+.hero-rule{width:64px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:28px auto;animation:heroFadeUp .9s ease .4s both}
+.hero-addr{font-size:.82rem;font-weight:300;letter-spacing:.07em;color:var(--white);opacity:.42;animation:heroFadeUp .9s ease .5s both}
+.hero-btns{display:flex;gap:14px;justify-content:center;margin-top:34px;animation:heroFadeUp .9s ease .6s both}
+.btn-gold{font-family:'Cinzel',serif;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;background:var(--gold);color:var(--black);padding:13px 34px;text-decoration:none;border-radius:2px;transition:background .25s,transform .2s,box-shadow .2s;box-shadow:0 4px 28px rgba(201,168,76,.22)}
+.btn-gold:hover{background:var(--gold-light);transform:translateY(-2px);box-shadow:0 8px 36px rgba(201,168,76,.38)}
+.btn-ghost{font-family:'Cinzel',serif;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold-dim);padding:13px 34px;text-decoration:none;border-radius:2px;transition:border-color .25s,color .25s,transform .2s}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold-light);transform:translateY(-2px)}
+.scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;opacity:.3;z-index:2;animation:bob 2.6s ease-in-out infinite}
+.scroll-hint span{font-family:'Cinzel',serif;font-size:.53rem;letter-spacing:.3em;text-transform:uppercase}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+@keyframes heroFadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+.doenertag-banner{background:linear-gradient(135deg,#8b1a1a 0%,#5a0f0f 50%,#8b1a1a 100%);border-top:1px solid rgba(201,168,76,.25);border-bottom:1px solid rgba(201,168,76,.25);overflow:hidden;position:relative}
+.doenertag-banner::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(201,168,76,.03) 0,rgba(201,168,76,.03) 1px,transparent 1px,transparent 60px)}
+.doenertag-inner{max-width:1160px;margin:0 auto;padding:32px 48px;display:flex;align-items:center;gap:32px;position:relative;z-index:1}
+.doenertag-badge{flex-shrink:0;background:var(--gold);color:var(--black);font-family:'Cinzel Decorative',serif;font-size:1.6rem;font-weight:900;width:90px;height:90px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;box-shadow:0 0 40px rgba(201,168,76,.4);animation:pulse 2.5s ease-in-out infinite}
+.doenertag-badge span{font-size:.55rem;letter-spacing:.1em;font-family:'Cinzel',serif;margin-top:2px}
+@keyframes pulse{0%,100%{box-shadow:0 0 30px rgba(201,168,76,.35)}50%{box-shadow:0 0 55px rgba(201,168,76,.6)}}
+.doenertag-text h2{font-family:'Cinzel Decorative',serif;font-size:1.6rem;color:var(--gold);margin-bottom:6px}
+.doenertag-text p{font-size:.92rem;color:var(--white);opacity:.8;font-weight:300;line-height:1.6}
+.doenertag-text strong{color:var(--gold);font-weight:700}
+
+.strip{background:var(--dark2);border-bottom:1px solid rgba(201,168,76,.1)}
+.strip-inner{max-width:1160px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:repeat(4,1fr)}
+.strip-item{padding:28px 18px;text-align:center;border-right:1px solid rgba(201,168,76,.07);transition:background .25s}
+.strip-item:last-child{border-right:none}
+.strip-item:hover{background:rgba(201,168,76,.04)}
+.strip-item .ico{font-size:1.4rem;display:block;margin-bottom:7px}
+.strip-item strong{font-family:'Cinzel',serif;font-size:.63rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:4px}
+.strip-item p{font-size:.8rem;color:var(--white);opacity:.5;font-weight:300;line-height:1.65}
+
+.delivery-section{background:var(--dark3);border-top:1px solid rgba(201,168,76,.08);border-bottom:1px solid rgba(201,168,76,.08)}
+.delivery-inner{max-width:1160px;margin:0 auto;padding:52px 48px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.delivery-text .sec-label{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:13px}
+.delivery-text h2{font-family:'Cinzel Decorative',serif;font-size:2rem;color:var(--white);margin-bottom:16px}
+.delivery-text p{font-size:.95rem;color:var(--white);opacity:.6;font-weight:300;line-height:1.85}
+.delivery-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.d-card{background:var(--dark2);border:1px solid rgba(201,168,76,.14);border-radius:3px;padding:22px}
+.d-card .d-ico{font-size:1.5rem;margin-bottom:10px;display:block}
+.d-card strong{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:5px}
+.d-card p{font-size:.8rem;color:var(--white);opacity:.5;font-weight:300;line-height:1.6}
+
+.social-bar{background:var(--dark2);padding:44px 48px}
+.social-inner{max-width:1160px;margin:0 auto;display:flex;align-items:center;gap:40px}
+.social-text{flex:1}
+.social-text h3{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.social-text p{font-size:.9rem;color:var(--white);opacity:.6;font-weight:300;line-height:1.7}
+.social-links{display:flex;gap:12px;flex-shrink:0}
+.soc-btn{display:flex;align-items:center;gap:9px;font-family:'Cinzel',serif;font-size:.64rem;letter-spacing:.15em;text-transform:uppercase;padding:11px 20px;border-radius:2px;text-decoration:none;transition:transform .2s,box-shadow .2s;border:1px solid rgba(201,168,76,.3);color:var(--white);background:var(--dark3)}
+.soc-btn:hover{transform:translateY(-2px);border-color:var(--gold);color:var(--gold);box-shadow:0 4px 20px rgba(201,168,76,.15)}
+.soc-btn .s-ico{font-size:1.1rem}
+
+.sec{max-width:1160px;margin:0 auto;padding:92px 48px}
+.sec-label{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:13px}
+.sec-title{font-family:'Cinzel Decorative',serif;font-size:clamp(1.7rem,3.5vw,2.7rem);color:var(--white);line-height:1.15;margin-bottom:18px}
+.gold-bar{width:52px;height:2px;background:var(--gold);margin-bottom:42px}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.about-text p{font-size:.96rem;line-height:1.9;color:var(--white);opacity:.63;font-weight:300;margin-bottom:18px}
+.badge{background:var(--dark2);border:1px solid rgba(201,168,76,.2);border-radius:4px;padding:30px}
+.rating-num{font-family:'Cinzel Decorative',serif;font-size:4rem;color:var(--gold);line-height:1}
+.stars{font-size:1.2rem;letter-spacing:4px;color:var(--gold);margin:6px 0}
+.rating-sub{font-family:'Cinzel',serif;font-size:.64rem;letter-spacing:.12em;color:var(--white);opacity:.38}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.stat{background:var(--dark3);border:1px solid rgba(201,168,76,.1);border-radius:3px;padding:16px;text-align:center;transition:border-color .25s}
+.stat:hover{border-color:rgba(201,168,76,.3)}
+.stat .n{font-family:'Cinzel Decorative',serif;font-size:1.4rem;color:var(--gold);display:block}
+.stat .l{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;font-family:'Cinzel',serif;color:var(--white);opacity:.38}
+
+.menu-wrap{background:var(--dark)}
+.tabs{display:flex;gap:2px;border-bottom:1px solid rgba(201,168,76,.12);margin-bottom:40px;flex-wrap:wrap}
+.tab{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;background:none;border:none;color:var(--white);opacity:.38;padding:11px 18px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:opacity .2s,color .2s,border-color .2s;white-space:nowrap}
+.tab.on{opacity:1;color:var(--gold);border-bottom-color:var(--gold)}
+.tab:hover{opacity:.72}
+.panel{display:none}
+.panel.on{display:block}
+.cat-title{font-family:'Cinzel',serif;font-size:.63rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin:32px 0 12px;padding-bottom:8px;border-bottom:1px solid rgba(201,168,76,.14)}
+.cat-title:first-child{margin-top:0}
+.items{display:grid;grid-template-columns:repeat(2,1fr);gap:2px}
+.item{background:var(--dark2);padding:16px 20px;display:flex;justify-content:space-between;align-items:flex-start;gap:14px;border:1px solid transparent;transition:background .2s,border-color .2s,transform .15s}
+.item:hover{background:rgba(201,168,76,.055);border-color:rgba(201,168,76,.12);transform:translateX(3px)}
+.item-left{flex:1}
+.item-num{font-family:'Cinzel',serif;font-size:.55rem;color:var(--gold);opacity:.48;margin-bottom:2px;display:block}
+.item-name{font-family:'Cinzel',serif;font-size:.79rem;color:var(--white);letter-spacing:.04em;margin-bottom:3px}
+.item-desc{font-size:.73rem;color:var(--white);opacity:.36;font-weight:300;line-height:1.5}
+.item-price{font-family:'Cinzel Decorative',serif;font-size:.8rem;color:var(--gold);white-space:nowrap;flex-shrink:0;text-align:right;line-height:1.7}
+.note{background:var(--dark2);border:1px solid rgba(201,168,76,.1);border-radius:3px;padding:14px 18px;margin-bottom:2px;font-size:.74rem;color:var(--white);opacity:.5;font-weight:300;line-height:1.75}
+.note strong{color:var(--gold);font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.08em;opacity:1}
+
+.hours-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.h-row{background:var(--dark2);display:flex;justify-content:space-between;padding:15px 22px;transition:background .2s}
+.h-row:hover{background:rgba(201,168,76,.04)}
+.h-row .day{font-family:'Cinzel',serif;font-size:.67rem;letter-spacing:.1em;color:var(--white);opacity:.58}
+.h-row .time{color:var(--gold);font-weight:300;font-size:.81rem}
+.h-row.today{background:rgba(201,168,76,.09);border-left:2px solid var(--gold)}
+.h-row.tuesday-special{background:rgba(158,26,26,.15);border-left:2px solid #b01e1e}
+.h-row.tuesday-special .day{color:#e88}
+.h-row.tuesday-special .time{color:#e8a0a0}
+
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.ccard{background:var(--dark2);border:1px solid rgba(201,168,76,.15);border-radius:4px;padding:32px}
+.ccard h3{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+.cline{display:flex;align-items:center;gap:14px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:.86rem;color:var(--white);opacity:.65;font-weight:300;text-decoration:none;transition:opacity .2s,color .2s,transform .15s}
+.cline:last-child{border-bottom:none}
+a.cline:hover{opacity:1;color:var(--gold);transform:translateX(4px)}
+.cline .ci{font-size:1rem;width:22px;text-align:center;opacity:.48;flex-shrink:0}
+.map-box{background:var(--dark2);border:1px solid rgba(201,168,76,.15);border-radius:4px;padding:32px;display:flex;flex-direction:column}
+.map-box h3{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.map-visual{flex:1;min-height:170px;background:var(--dark3);border-radius:3px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;margin-bottom:16px}
+.map-visual::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(201,168,76,.04) 0,rgba(201,168,76,.04) 1px,transparent 1px,transparent 38px),repeating-linear-gradient(90deg,rgba(201,168,76,.04) 0,rgba(201,168,76,.04) 1px,transparent 1px,transparent 38px)}
+.map-pin{font-size:2rem;z-index:1;animation:bob 2.4s ease-in-out infinite}
+.map-addr{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.1em;color:var(--white);opacity:.42;margin-bottom:13px}
+.btn-outline{display:inline-block;font-family:'Cinzel',serif;font-size:.59rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold-dim);padding:10px 20px;text-decoration:none;border-radius:2px;text-align:center;transition:border-color .25s,color .25s}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold-light)}
+
+footer{background:var(--black);border-top:1px solid rgba(201,168,76,.1);padding:52px 48px;text-align:center}
+.foot-logo{font-family:'Cinzel Decorative',serif;font-size:1.5rem;color:var(--gold);letter-spacing:.18em;display:block;margin-bottom:10px}
+.foot-tag{font-family:'Cinzel',serif;font-size:.56rem;letter-spacing:.38em;text-transform:uppercase;color:var(--white);opacity:.25;margin-bottom:24px;display:block}
+.foot-links{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-bottom:22px}
+.foot-links a{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--white);opacity:.3;text-decoration:none;transition:opacity .2s,color .2s}
+.foot-links a:hover{opacity:.85;color:var(--gold)}
+.foot-copy{font-size:.7rem;color:var(--white);opacity:.17;font-weight:300}
+
+@media(max-width:800px){
+  nav{padding:15px 20px}.nav-links{display:none}
+  .sec{padding:58px 20px}
+  .strip-inner{grid-template-columns:1fr 1fr;padding:0 20px}
+  .about-grid,.delivery-inner,.contact-grid{grid-template-columns:1fr;gap:32px}
+  .items{grid-template-columns:1fr}
+  .hours-grid{grid-template-columns:1fr}
+  .doenertag-inner{flex-direction:column;gap:20px;padding:28px 20px;text-align:center}
+  .social-bar{padding:36px 20px}.social-inner{flex-direction:column;gap:20px}
+  .hero-btns{flex-direction:column;align-items:center}
+  footer{padding:38px 20px}
+}
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="#" class="nav-logo">STAR</a>
+  <ul class="nav-links">
+    <li><a href="#about">Über uns</a></li>
+    <li><a href="#speisekarte">Speisekarte</a></li>
+    <li><a href="#zeiten">Öffnungszeiten</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+  </ul>
+  <a href="tel:0447494187" class="nav-phone">☎ 04474 / 94 18 73</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-particles" id="particles"></div>
+  <svg class="hero-ring" viewBox="0 0 200 200" fill="none">
+    <circle cx="100" cy="100" r="97" stroke="#c9a84c" stroke-width=".4" stroke-dasharray="5 5"/>
+    <circle cx="100" cy="100" r="78" stroke="#c9a84c" stroke-width=".2" stroke-dasharray="3 9"/>
+  </svg>
+  <div class="hero-content">
+    <svg class="hero-star" viewBox="0 0 120 115" fill="none">
+      <path d="M60 4L74.5 45.5H118L83.5 70.5L97 112L60 87.5L23 112L36.5 70.5L2 45.5H45.5L60 4Z" fill="none" stroke="#c9a84c" stroke-width="4" stroke-linejoin="round"/>
+    </svg>
+    <h1>STAR</h1>
+    <p class="hero-cats">Pizza <em>★</em> Grill <em>★</em> Döner <em>★</em> Pasta</p>
+    <div class="hero-rule"></div>
+    <p class="hero-addr">Kaiforter Str. 3 · 49681 Garrel · Tel. 04474 / 94 18 73</p>
+    <div class="hero-btns">
+      <a href="#speisekarte" class="btn-gold">Speisekarte</a>
+      <a href="tel:0447494187" class="btn-ghost">Jetzt anrufen</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Entdecken</span>
+    <svg width="14" height="18" viewBox="0 0 14 18" fill="none"><path d="M7 1v16M1 11l6 6 6-6" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+</div>
+
+<div class="doenertag-banner">
+  <div class="doenertag-inner reveal">
+    <div class="doenertag-badge">6€<span>Döner</span></div>
+    <div class="doenertag-text">
+      <h2>🥙 Dienstags-Dönertag</h2>
+      <p>Jeden <strong>Dienstag</strong> gibt es bei uns den Döner für nur <strong>6,00 €</strong>! Frisch zubereiteter Döner mit knusprigem Fladenbrot, gemischtem Salat und hausgemachter Soße – zu einem unschlagbaren Preis.</p>
+    </div>
+  </div>
+</div>
+
+<div class="strip">
+  <div class="strip-inner">
+    <div class="strip-item reveal"><span class="ico">⭐</span><strong>Bewertet</strong><p>4,7 / 5 Sterne<br>343 Bewertungen</p></div>
+    <div class="strip-item reveal"><span class="ico">📍</span><strong>Adresse</strong><p>Kaiforter Str. 3<br>49681 Garrel</p></div>
+    <div class="strip-item reveal"><span class="ico">📞</span><strong>Telefon</strong><p>04474 / 94 18 73<br>04474 / 94 18 74</p></div>
+    <div class="strip-item reveal"><span class="ico">🛵</span><strong>Lieferservice</strong><p>Di–Sa 17:00–22:00 Uhr<br>ab 15 € · Garrel</p></div>
+  </div>
+</div>
+
+<div class="delivery-section">
+  <div class="delivery-inner">
+    <div class="delivery-text reveal-left">
+      <span class="sec-label">Bequem nach Hause</span>
+      <h2>Lieferservice</h2>
+      <div class="gold-bar"></div>
+      <p>Wir liefern dein Lieblingsessen direkt zu dir! <strong style="color:var(--gold)">Dienstag bis Samstag, 17:00–22:00 Uhr.</strong> Mindestbestellwert <strong style="color:var(--gold)">15 €</strong> – innerorts keine Lieferkosten, außerorts 5 €. Einfach anrufen!</p>
+    </div>
+    <div class="delivery-cards reveal-right">
+      <div class="d-card"><span class="d-ico">🕔</span><strong>Lieferzeiten</strong><p>Di–Sa<br>17:00–22:00 Uhr</p></div>
+      <div class="d-card"><span class="d-ico">💶</span><strong>Mindestbestellung</strong><p>15,00 €<br>5 € außerorts</p></div>
+      <div class="d-card"><span class="d-ico">📞</span><strong>Bestellung</strong><p>04474 / 94 18 73<br>04474 / 94 18 74</p></div>
+      <div class="d-card"><span class="d-ico">📍</span><strong>Liefergebiet</strong><p>Garrel Innerorts<br>& Außerorts</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="social-bar">
+  <div class="social-inner reveal">
+    <div class="social-text">
+      <h3>Folgt uns auf Social Media</h3>
+      <p>Auf Instagram und Facebook zeigen wir euch <strong style="color:var(--gold)">wöchentliche Angebote</strong>, saisonale Spezialitäten und aktuelle News. Einfach folgen und kein Angebot verpassen!</p>
+    </div>
+    <div class="social-links">
+      <a href="https://www.instagram.com/star.garrel/" target="_blank" class="soc-btn"><span class="s-ico">📸</span>Instagram</a>
+      <a href="https://www.facebook.com/star.garrel" target="_blank" class="soc-btn"><span class="s-ico">📘</span>Facebook</a>
+    </div>
+  </div>
+</div>
+
+<section id="about">
+  <div class="sec">
+    <div class="about-grid">
+      <div class="about-text reveal-left">
+        <span class="sec-label">Willkommen</span>
+        <h2 class="sec-title">Mehr als nur ein Restaurant</h2>
+        <div class="gold-bar"></div>
+        <p>Im STAR in Garrel verbinden wir die Leidenschaft für echte Küche mit herzlicher Gastfreundschaft. Ob knusprige Pizza aus dem Steinofen, saftige Grillspezialitäten, authentischer Döner oder hausgemachte Pasta – bei uns findet jeder seinen Lieblingsgeschmack.</p>
+        <p>Unsere Gäste schätzen die Vielfalt der Speisekarte, die frischen Zutaten und die familiäre Atmosphäre.</p>
+      </div>
+      <div class="reveal-right">
+        <div class="badge">
+          <div class="rating-num">4,7</div>
+          <div class="stars">★★★★★</div>
+          <div class="rating-sub">343 Google-Bewertungen</div>
+          <div class="stat-grid">
+            <div class="stat"><span class="n">764</span><span class="l">Facebook</span></div>
+            <div class="stat"><span class="n">421</span><span class="l">Instagram</span></div>
+            <div class="stat"><span class="n">4</span><span class="l">Kategorien</span></div>
+            <div class="stat"><span class="n">🏆</span><span class="l">Top bewertet</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ SPEISEKARTE ══════════════ -->
+<div class="menu-wrap" id="speisekarte">
+<div class="sec">
+  <span class="sec-label reveal">Was wir anbieten</span>
+  <h2 class="sec-title reveal">Speisekarte</h2>
+  <div class="gold-bar reveal"></div>
+
+  <div class="tabs">
+    <button class="tab on"  onclick="showTab('vorspeisen',this)">Vorspeisen</button>
+    <button class="tab"     onclick="showTab('pizza',this)">Pizza</button>
+    <button class="tab"     onclick="showTab('calzone',this)">Calzone & Rollos</button>
+    <button class="tab"     onclick="showTab('ueberbacken',this)">Überbacken</button>
+    <button class="tab"     onclick="showTab('tuerkisch',this)">Türk. Grill</button>
+    <button class="tab"     onclick="showTab('baguette',this)">Baguette</button>
+    <button class="tab"     onclick="showTab('nudeln',this)">Nudeln</button>
+    <button class="tab"     onclick="showTab('salate',this)">Salate</button>
+    <button class="tab"     onclick="showTab('beilagen',this)">Beilagen</button>
+    <button class="tab"     onclick="showTab('getraenke',this)">Getränke</button>
+  </div>
+
+  <!-- ══ VORSPEISEN ══ -->
+  <!-- Aus Bild 2: 1=4,00 | 2=5,50 | 3=5,00 | 4=6,00 | 5=5,00 | 6=7,50 -->
+  <!-- Pizzabrötchen: 9=10,00 | 10=10,00 | 11=9,50 | 12=9,50 | 13=7,00 -->
+  <!-- Spezialitäten: 14=7,50 | 15=7,50 | 16=5,50 | 17=8,00 | 18=9,00 | 19=11,00 | 20=12,00 -->
+  <div class="panel on" id="p-vorspeisen">
+    <p class="note">Alle Vorspeisen werden mit Brot serviert.</p>
+    <div class="items" style="margin-top:2px">
+      <div class="item"><div class="item-left"><span class="item-num">1</span><div class="item-name">Pizzabrot</div></div><div class="item-price">4,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">2</span><div class="item-name">Weichkäse</div><div class="item-desc">mit frischen Tomaten u. Gurken</div></div><div class="item-price">5,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">3</span><div class="item-name">Tzatziki</div><div class="item-desc">eine pikante Quarkspeise mit Knoblauch</div></div><div class="item-price">5,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">4</span><div class="item-name">Sigara Böreği</div><div class="item-desc">Teigrölchen gefüllt mit Weichkäse u. Petersilie</div></div><div class="item-price">6,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">5</span><div class="item-name">Peperoni u. Oliven</div></div><div class="item-price">5,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">6</span><div class="item-name">Spezial Vorspeise</div><div class="item-desc">von allem ein bisschen</div></div><div class="item-price">7,50 €</div></div>
+    </div>
+
+    <p class="cat-title">Pizzabrötchen – dazu Soße</p>
+    <div class="items">
+      <div class="item"><div class="item-left"><span class="item-num">9</span><div class="item-name">Pizzabrötchen</div><div class="item-desc">gefüllt mit Käse, Hähnchenfl. u. Hollandaisesoße</div></div><div class="item-price">10,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">10</span><div class="item-name">Pizzabrötchen</div><div class="item-desc">gefüllt mit Kebab Hollandaise u. Käse</div></div><div class="item-price">10,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">11</span><div class="item-name">Pizzabrötchen</div><div class="item-desc">gefüllt mit Thunfisch u. Weichkäse</div></div><div class="item-price">9,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">12</span><div class="item-name">Pizzabrötchen</div><div class="item-desc">gefüllt mit Salami u. Schinken</div></div><div class="item-price">9,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">13</span><div class="item-name">Pizzabrötchen</div><div class="item-desc">gefüllt mit Käse u. Weichkäse</div></div><div class="item-price">7,00 €</div></div>
+    </div>
+
+    <p class="cat-title">Spezialitäten des Hauses</p>
+    <p class="note">Hausgemachte Soße: Tzatziki, Joghurt, Cocktail, scharfe Soße (Currysoße) u. täglich frisches selbstgebackenes Fladenbrot aus dem Steinofen.</p>
+    <div class="items" style="margin-top:2px">
+      <div class="item"><div class="item-left"><span class="item-num">14</span><div class="item-name">Hähnchen Kebab</div><div class="item-desc">Hähnchenfl. im Fladenbrot mit gemischtem Salat u. versch. Soßen</div></div><div class="item-price">7,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">15</span><div class="item-name">Kebab</div><div class="item-desc">Kebabfleisch im Fladenbrot mit gemischtem Salat u. versch. Soßen</div></div><div class="item-price">7,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">16</span><div class="item-name">Kebab Vegetarisch</div><div class="item-desc">Weichkäse im Fladenbrot mit gemischtem Salat u. verschiedenen Soßen</div></div><div class="item-price">5,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">17</span><div class="item-name">Dürüm</div><div class="item-desc">Kebabfleisch im selbstgebackenen dünnen Brot mit gemischtem Salat u. Soßen</div></div><div class="item-price">8,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">18</span><div class="item-name">Kleiner Kebab-Teller</div><div class="item-desc">für unsere kleinen Gäste: Kebabfleisch mit Reis oder Pommes, gemischtem Salat u. Soße</div></div><div class="item-price">9,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">19</span><div class="item-name">Kebab-Teller</div><div class="item-desc">Kebabfleisch mit Reis oder Pommes, gemischtem Salat u. Soße</div></div><div class="item-price">11,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">20</span><div class="item-name">Kebab-Teller Spezial</div><div class="item-desc">Kebabfleisch mit Reis oder Pommes, Sucuk, gemischtem Salat u. Soße</div></div><div class="item-price">12,00 €</div></div>
+    </div>
+  </div>
+
+  <!-- ══ PIZZA ══ -->
+  <!-- Aus Bild 2 genau abgelesen: klein/mittel/groß 26/31/40cm -->
+  <!-- 70: 6,50/8,50/15,00 | 71: 7,50/9,00/16,00 | 72: 7,50/9,50/17,00 | 73: 7,50/9,50/17,00 -->
+  <!-- 74: 8,00/10,00/20,00 | 75: 8,00/10,00/19,00 | 76: 8,50/10,00/19,50 | 77: 8,50/10,00/19,50 -->
+  <!-- 78: 8,50/10,00/20,00 | 79: 9,50/11,50/21,50 | 80: 8,50/10,50/20,00 | 81: 9,50/11,00/21,00 -->
+  <!-- 82: 9,50/11,00/21,50 | 83: 9,00/11,00/20,00 | 84: 9,50/11,50/21,00 | 85: 8,00/10,00/19,00 -->
+  <!-- 86: 8,50/10,50/19,50 | 87: 8,50/10,50/19,50 | 88: 9,00/11,00/20,00 | 89: 9,00/11,00/20,00 -->
+  <!-- 90: 9,00/11,00/20,00 | 91: 9,00/11,00/20,00 | 92: 9,00/11,00/20,00 | 93: 9,00/11,00/20,00 -->
+  <!-- 94: 9,00/11,00/20,00 | 95: 9,50/11,50/21,00 | 96: 10,00/12,00/21,00 -->
+  <div class="panel" id="p-pizza">
+    <div class="note" style="margin-bottom:10px">
+      <strong>Pizzagröße:</strong> Klein 26cm · Mittel 31cm · Groß 40cm<br>
+      <strong>Extrabelag:</strong> Versch. Belag 1,50/2,00/3,00 € · Kebab 2,00/3,00/4,00 € · Hähnchenfl. 2,00/3,00/4,00 € · Meeresfrüchte 2,00/3,00/4,00 € · Thunfisch 2,00/3,00/4,00 € · Parmesan 2,00/3,00/4,00 €<br>
+      Alle Pizzen mit Tomatensauce serviert und nach Wunsch zusammenstellbar.<br>
+      <strong>Königs-Familienpizza 50cm</strong> mit 6 Belägen Ihrer Wahl: <strong style="color:var(--gold)">30,00 €</strong>
+    </div>
+    <div class="items">
+      <div class="item"><div class="item-left"><span class="item-num">70</span><div class="item-name">Pizza Margherita</div><div class="item-desc">mit Käse</div></div><div class="item-price">6,50 / 8,50 / 15,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">71</span><div class="item-name">Pizza Champignons</div><div class="item-desc">mit Käse und Champignons</div></div><div class="item-price">7,50 / 9,50 / 17,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">72</span><div class="item-name">Pizza Rindersalami</div><div class="item-desc">mit Käse und Rindersalami</div></div><div class="item-price">7,50 / 9,50 / 17,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">73</span><div class="item-name">Pizza Kochschinken</div><div class="item-desc">mit Käse und Kochschinken</div></div><div class="item-price">7,50 / 9,50 / 17,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">74</span><div class="item-name">Pizza Rucola</div><div class="item-desc">mit frischen Tomaten, Mozzarella, Rucola u. Parmesan</div></div><div class="item-price">9,00 / 11,00 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">75</span><div class="item-name">Pizza Thunfisch</div><div class="item-desc">mit Käse, Thunfisch, Zwiebeln</div></div><div class="item-price">8,50 / 10,00 / 19,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">76</span><div class="item-name">Pizza Rindersalami-Champignons</div><div class="item-desc">mit Käse, Rindersalami u. Champignons</div></div><div class="item-price">8,50 / 10,00 / 19,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">77</span><div class="item-name">Pizza Kochschinken-Champignons</div><div class="item-desc">mit Käse, Kochschinken u. Champignons</div></div><div class="item-price">8,50 / 10,00 / 19,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">78</span><div class="item-name">Pizza quattro Formaggi</div><div class="item-desc">mit vier verschiedenen Käsesorten</div></div><div class="item-price">8,50 / 10,00 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">79</span><div class="item-name">Pizza Star</div><div class="item-desc">mit Käse, Kebabfleisch, Hähnchenfl., Paprika u. Hollandaise</div></div><div class="item-price">9,50 / 11,50 / 21,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">80</span><div class="item-name">Pizza Schinken Thunfisch</div><div class="item-desc">mit Schinken, Thunfisch u. Käse</div></div><div class="item-price">8,50 / 10,50 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">81</span><div class="item-name">Pizza Salami Kebab</div><div class="item-desc">mit Käse, Salami u. Kebabfleisch</div></div><div class="item-price">9,50 / 11,00 / 21,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">82</span><div class="item-name">Pizza Kebab Brokkoli</div><div class="item-desc">mit Käse, Brokkoli u. Hollandaise</div></div><div class="item-price">9,50 / 11,50 / 21,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">83</span><div class="item-name">Pizza Kebab Hollandaise</div><div class="item-desc">mit Käse, Kebabfleisch u. Hollandaise</div></div><div class="item-price">9,00 / 11,00 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">84</span><div class="item-name">Pizza Kebab Jalapenos</div><div class="item-desc">mit Kebabfleisch, Jalapenos, Hollandaise u. Käse</div></div><div class="item-price">9,50 / 11,50 / 21,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">85</span><div class="item-name">Pizza Hawaii</div><div class="item-desc">mit Käse, Kochschinken u. Ananas</div></div><div class="item-price">8,00 / 10,00 / 19,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">86</span><div class="item-name">Pizza Bolognese</div><div class="item-desc">mit Käse u. Hackfleischsoße</div></div><div class="item-price">8,50 / 10,00 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">87</span><div class="item-name">Pizza Ibiza</div><div class="item-desc">mit Käse, Kochschinken, Salami u. Champignons</div></div><div class="item-price">8,50 / 10,50 / 19,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">88</span><div class="item-name">Pizza Quattro Stagioni</div><div class="item-desc">mit Käse, Rindersalami, Kochschinken, Paprika u. Champignons</div></div><div class="item-price">9,00 / 11,00 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">89</span><div class="item-name">Pizza Amerika</div><div class="item-desc">mit Käse, Kochschinken, Champignons u. Ananas</div></div><div class="item-price">9,00 / 11,00 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">90</span><div class="item-name">Pizza Artischocken</div><div class="item-desc">mit Käse, Rindersalami, Champignons, Zwiebeln u. Artischocken</div></div><div class="item-price">9,00 / 11,00 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">91</span><div class="item-name">Pizza Italia</div><div class="item-desc">mit Käse, Thunfisch, Paprika u. Champignons</div></div><div class="item-price">9,00 / 11,00 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">92</span><div class="item-name">Pizza Hollandaise</div><div class="item-desc">mit Käse, Kochschinken, Ananas u. Hollandaisesoße</div></div><div class="item-price">9,00 / 11,00 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">93</span><div class="item-name">Pizza Kebab-Zwiebeln</div><div class="item-desc">mit Käse, Kebabfleisch u. Zwiebeln</div></div><div class="item-price">9,00 / 11,00 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">94</span><div class="item-name">Pizza Kebab-Champignons</div><div class="item-desc">mit Käse, Kebabfleisch u. Champignons</div></div><div class="item-price">9,00 / 11,00 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">95</span><div class="item-name">Pizza Kebab Spezial</div><div class="item-desc">mit Käse, Kebabfleisch, Weichkäse u. Zwiebeln</div></div><div class="item-price">9,50 / 11,50 / 21,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">96</span><div class="item-name">Pizza Frutti di Mare</div><div class="item-desc">mit Käse, Meeresfrüchten u. frischem Knoblauch</div></div><div class="item-price">10,00 / 12,00 / 21,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">97</span><div class="item-name">Pizza Hähnchen</div><div class="item-desc">mit Käse u. Hähnchenfl.</div></div><div class="item-price">9,00 / 11,00 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">98</span><div class="item-name">Pizza Vegetarisch</div><div class="item-desc">mit Käse u. frischem Gemüse</div></div><div class="item-price">9,00 / 11,00 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">99</span><div class="item-name">Pizza Caprese</div><div class="item-desc">mit frischen Tomaten, Mozzarella u. Basilikum</div></div><div class="item-price">9,00 / 11,00 / 19,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">100</span><div class="item-name">Pizza Sucuk</div><div class="item-desc">mit Käse u. Sucukwurst</div></div><div class="item-price">9,00 / 11,00 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">101</span><div class="item-name">Pizza Rindersalami-Kochschinken</div><div class="item-desc">mit Käse, Rindersalami u. Kochschinken</div></div><div class="item-price">8,50 / 10,00 / 19,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">102</span><div class="item-name">Pizza Spinat</div><div class="item-desc">mit Käse u. Spinat</div></div><div class="item-price">9,00 / 11,00 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">103</span><div class="item-name">Pizza Mix</div><div class="item-desc">mit Käse u. gemischtem Belag</div></div><div class="item-price">9,00 / 11,00 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">104</span><div class="item-name">Pizza Mix 2</div><div class="item-desc">mit Käse u. gemischtem Belag</div></div><div class="item-price">9,00 / 11,00 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">105</span><div class="item-name">Pizza Brokkoli Hollandaise</div><div class="item-desc">mit Käse, Brokkoli u. Hollandaise</div></div><div class="item-price">9,00 / 11,00 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">106</span><div class="item-name">Pizza Thunfisch-Champignons</div><div class="item-desc">mit Käse, Thunfisch u. Champignons</div></div><div class="item-price">8,50 / 10,50 / 20,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">107</span><div class="item-name">Pizza Hähnchen Brokkoli Hollandaise</div><div class="item-desc">mit Käse, Hähnchenfl., Brokkoli u. Hollandaise</div></div><div class="item-price">9,50 / 11,50 / 21,00 €</div></div>
+    </div>
+  </div>
+
+  <!-- ══ CALZONE & ROLLOS ══ (aus Bild 1) -->
+  <div class="panel" id="p-calzone">
+    <p class="cat-title">Calzone – geschlossene Pizza</p>
+    <div class="items">
+      <div class="item"><div class="item-left"><span class="item-num">110</span><div class="item-name">Calzone Ibiza</div><div class="item-desc">mit Tomatensauce, Käse, Rindersalami, Kochschinken u. Champignons</div></div><div class="item-price">10,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">111</span><div class="item-name">Calzone Quattro Stagioni</div><div class="item-desc">mit Tomatensauce, Käse, Rindersalami, Kochschinken, Paprika u. Champignons</div></div><div class="item-price">11,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">112</span><div class="item-name">Calzone Roma</div><div class="item-desc">mit Tomatensauce, Käse, Thunfisch, Champignons u. Zwiebeln</div></div><div class="item-price">11,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">113</span><div class="item-name">Calzone Kebab</div><div class="item-desc">mit Tomatensauce, Käse, Kebabfleisch, Zwiebeln u. Tzatziki</div></div><div class="item-price">11,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">114</span><div class="item-name">Calzone Spezial</div><div class="item-desc">mit Tomatensauce, Käse, Kebabfleisch, Weichkäse, Kräutermilch, Zwiebeln u. Tzatziki</div></div><div class="item-price">12,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">115</span><div class="item-name">Calzone Metaxa</div><div class="item-desc">Tomatensauce, Käse, Kebabfleisch, Metaxasoße</div></div><div class="item-price">12,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">116</span><div class="item-name">Calzone Hähnchen</div><div class="item-desc">mit Tomatensauce, Käse u. Hähnchenfl.</div></div><div class="item-price">11,50 €</div></div>
+    </div>
+
+    <p class="cat-title">Rollos – dünnes hausgemachtes Brot, gerollt mit Füllung</p>
+    <div class="items">
+      <div class="item"><div class="item-left"><span class="item-num">120</span><div class="item-name">Rollo Oriental</div><div class="item-desc">mit Tomatensauce, Cocktailsoße, Käse, Tomaten, Gurken, Peperoni, Weichkäse u. gem. Salat</div></div><div class="item-price">8,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">121</span><div class="item-name">Rollo Rindersalami</div><div class="item-desc">mit Tomatensauce, Cocktailsoße, Käse, Rindersalami, Zwiebeln u. gem. Salat</div></div><div class="item-price">9,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">122</span><div class="item-name">Rollo Thunfisch</div><div class="item-desc">mit Tomatensauce, Cocktailsoße, Käse, Thunfisch, Zwiebeln u. gem. Salat</div></div><div class="item-price">10,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">123</span><div class="item-name">Rollo Kebab</div><div class="item-desc">mit Tomatensauce, Cocktailsoße, Käse, Kebabfleisch, Zwiebeln, Tzatziki u. gem. Salat</div></div><div class="item-price">11,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">124</span><div class="item-name">Rollo Hähnchen</div><div class="item-desc">mit Tomatensauce, Cocktailsoße, Käse, Hähnchenfl., Zwiebeln u. gem. Salat</div></div><div class="item-price">11,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">125</span><div class="item-name">Rollo Kebab-Champignons</div><div class="item-desc">mit Tomatensauce, Cocktailsoße, Käse, Kebabfleisch, Zwiebeln, Champignons u. gem. Salat</div></div><div class="item-price">11,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">126</span><div class="item-name">Rollo Kebab Spezial</div><div class="item-desc">mit Tomatensauce, Cocktailsoße, Käse, Kebabfleisch, Weichkäse, Zwiebeln u. gem. Salat</div></div><div class="item-price">12,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">127</span><div class="item-name">Rollo Metaxa</div><div class="item-desc">mit Kebabfleisch, Käse, Metaxasoße u. gem. Salat</div></div><div class="item-price">12,00 €</div></div>
+    </div>
+  </div>
+
+  <!-- ══ ÜBERBACKEN ══ -->
+  <!-- Bild 2: 21 kl.7,50/gr.9,00 | 22=8,50 | 23=5,50 | 24=11,00 | 25=12,00 | 26=10,00 -->
+  <!-- 27=12,00 | 28=11,00 | 29=12,00 | 30=12,00 | 31=12,00 | 32=12,50 | 33=12,50 | 34=12,50 -->
+  <div class="panel" id="p-ueberbacken">
+    <p class="note">Alle überbackenen Speisen werden mit Brot serviert.</p>
+    <div class="items" style="margin-top:2px">
+      <div class="item"><div class="item-left"><span class="item-num">21</span><div class="item-name">Kebab-Box</div><div class="item-desc">Kebabfleisch in Box mit Pommes u. verschiedenen Soßen</div></div><div class="item-price">kl. 7,50 €<br>gr. 9,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">22</span><div class="item-name">Lahmacun türkische Pizza</div><div class="item-desc">Kebabfleisch mit gem. Salat, Krautsalat, Zwiebeln u. Soße</div></div><div class="item-price">8,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">23</span><div class="item-name">Lahmacun türkische Pizza</div><div class="item-desc">mit gem. Salat, Krautsalat, Zwiebeln u. Soße</div></div><div class="item-price">5,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">24</span><div class="item-name">Hähnchen Kebab-Teller</div><div class="item-desc">Hähnchenfl. mit Reis oder Pommes, gemischtem Salat u. Soße</div></div><div class="item-price">11,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">25</span><div class="item-name">Kebab Metaxa – überbacken</div><div class="item-desc">mit Metaxasoße, Kebabfleisch, Käse überbacken</div></div><div class="item-price">12,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">26</span><div class="item-name">Brokkoli – überbacken</div><div class="item-desc">mit Sahne, Brokkoli, Champignons, Paprika, Blumenkohl, Spargel u. Käse überbacken</div></div><div class="item-price">10,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">27</span><div class="item-name">Hähnchen – überbacken</div><div class="item-desc">Hähnchenfl. mit Sahne, Brokkoli, Champignons, Knoblauch u. Käse überbacken</div></div><div class="item-price">12,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">28</span><div class="item-name">Kebab – überbacken</div><div class="item-desc">Kebabfleisch mit Sahne, Tomatensauce u. Käse überbacken</div></div><div class="item-price">11,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">29</span><div class="item-name">Kebab – überbacken</div><div class="item-desc">Kebabfleisch mit Weichkäse, Sahne, Zwiebeln, Tomatensauce u. Käse überbacken</div></div><div class="item-price">12,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">30</span><div class="item-name">Kebab – überbacken</div><div class="item-desc">Kebabfleisch mit Sahne, frischer Paprika, Zwiebeln, Tomatensauce u. Käse überbacken</div></div><div class="item-price">12,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">31</span><div class="item-name">Kebab – überbacken</div><div class="item-desc">mit Sahne, frische Champignons, Paprika, Tomatensauce u. Käse überbacken</div></div><div class="item-price">12,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">32</span><div class="item-name">Kebab – überbacken</div><div class="item-desc">mit Sahne, Weichkäse, Zwiebeln, Paprika, frischen Tomaten, Tomatensauce u. Käse überbacken</div></div><div class="item-price">12,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">33</span><div class="item-name">Kebab – überbacken</div><div class="item-desc">Kebabfleisch mit Hollandaise überbacken</div></div><div class="item-price">12,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">34</span><div class="item-name">Kebab – überbacken „Mozzarella"</div><div class="item-desc">mit Tomatensauce, Cocktailsoße, Zwiebeln, Paprika u. Mozzarella überbacken</div></div><div class="item-price">12,50 €</div></div>
+    </div>
+  </div>
+
+  <!-- ══ TÜRKISCHE GERICHTE VOM GRILL ══ -->
+  <!-- Bild 2: 40=15,00 | 41=16,00 | 43=18,00 | 44=15,00 | 45=19,50 -->
+  <div class="panel" id="p-tuerkisch">
+    <p class="note">Alle Grill-Gerichte werden mit Brot, gegrillten Tomaten / Paprika serviert und Soße nach Wahl.</p>
+    <div class="items" style="margin-top:2px">
+      <div class="item"><div class="item-left"><span class="item-num">40</span><div class="item-name">Hähnchenspieß</div><div class="item-desc">Hähnchenfl. dazu Reis u. gem. Salat</div></div><div class="item-price">15,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">41</span><div class="item-name">Hähnchenbrustfilet Hollandaise</div><div class="item-desc">Hähnchenbrustfilet mit Hollandaisesoße dazu Reis u. gem. Salat</div></div><div class="item-price">16,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">43</span><div class="item-name">Lammkotelett</div><div class="item-desc">Lammfleisch dazu Reis u. gem. Salat</div></div><div class="item-price">18,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">44</span><div class="item-name">Köfteteller</div><div class="item-desc">Rinderhackfleisch dazu Reis u. gem. Salat</div></div><div class="item-price">15,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">45</span><div class="item-name">Gemischter Grillteller</div><div class="item-desc">Hähnchenfl., Lammkotelett, Köfte u. Dönerfleisch dazu Reis u. gem. Salat (für mehrere Personen als Platte serviert)</div></div><div class="item-price">19,50 €</div></div>
+    </div>
+  </div>
+
+  <!-- ══ BAGUETTE ══ (aus Bild 1) -->
+  <div class="panel" id="p-baguette">
+    <div class="items">
+      <div class="item"><div class="item-left"><span class="item-num">130</span><div class="item-name">Baguette vegetarisch</div><div class="item-desc">gem. Salat, Käse, Weichkäse u. Soße</div></div><div class="item-price">7,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">131</span><div class="item-name">Baguette Rindersalami</div><div class="item-desc">mit Tomaten, Eisbergsalat, Rindersalami, Käse u. Soße</div></div><div class="item-price">7,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">132</span><div class="item-name">Baguette Kochschinken</div><div class="item-desc">mit Tomaten, Eisbergsalat, Kochschinken, Käse u. Soße</div></div><div class="item-price">7,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">133</span><div class="item-name">Baguette Hawaii</div><div class="item-desc">mit Tomaten, Eisbergsalat, Kochschinken, Ananas, Käse u. Soße</div></div><div class="item-price">8,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">134</span><div class="item-name">Baguette Thunfisch</div><div class="item-desc">mit Tomaten, Eisbergsalat, Thunfisch, Zwiebeln, Käse u. Soße</div></div><div class="item-price">9,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">135</span><div class="item-name">Baguette Chicken</div><div class="item-desc">mit Tomaten, Eisbergsalat, Hähnchenfl., Zwiebeln, Käse u. Soße</div></div><div class="item-price">9,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">136</span><div class="item-name">Baguette Kebab</div><div class="item-desc">mit Tomaten, Eisbergsalat, Kebabfleisch, Zwiebeln, Käse u. Soße</div></div><div class="item-price">9,50 €</div></div>
+    </div>
+  </div>
+
+  <!-- ══ NUDELN ══ (aus Bild 1) -->
+  <div class="panel" id="p-nudeln">
+    <p class="note">Alle Nudelgerichte können auch mit Käse überbacken werden: Aufschlag 1,50 €.</p>
+    <p class="cat-title">Nudelgerichte</p>
+    <div class="items">
+      <div class="item"><div class="item-left"><span class="item-num">140</span><div class="item-name">Spaghetti a la Napolitana</div><div class="item-desc">Spaghetti mit Tomatensauce u. Parmesan</div></div><div class="item-price">8,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">141</span><div class="item-name">Spaghetti Bolognese</div><div class="item-desc">Spaghetti mit Fleischsoße u. Parmesan</div></div><div class="item-price">9,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">142</span><div class="item-name">Spaghetti a la Carbonara</div><div class="item-desc">Spaghetti mit El. Kochschinken, Parmesan u. Sahnesoße</div></div><div class="item-price">9,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">143</span><div class="item-name">Penne a la Napolitana</div><div class="item-desc">mit Penne, Parmesan u. Tomatensauce</div></div><div class="item-price">8,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">144</span><div class="item-name">Penne Bolognese</div><div class="item-desc">mit Penne, Parmesan u. Fleischsoße</div></div><div class="item-price">9,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">145</span><div class="item-name">Penne Gemüse</div><div class="item-desc">mit Penne, Paprika, frischer Champignons, Sahne, Parmesan u. Tomatensauce</div></div><div class="item-price">10,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">146</span><div class="item-name">Penne al Curry</div><div class="item-desc">Hähnchen, Brokkoli u. Currysahnesoße</div></div><div class="item-price">12,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">147</span><div class="item-name">Penne Hähnchen Gemüse</div><div class="item-desc">mit Penne, Hähnchenfl., frischem Gemüse u. Sahnesauce</div></div><div class="item-price">12,00 €</div></div>
+    </div>
+    <p class="cat-title">Nudelaufläufe</p>
+    <div class="items">
+      <div class="item"><div class="item-left"><span class="item-num">150</span><div class="item-name">Lasagne</div><div class="item-desc">mit Fleischsoße, Sahne u. Käse überbacken</div></div><div class="item-price">12,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">151</span><div class="item-name">Hähnchen Penne</div><div class="item-desc">mit Hähnchenfl., Tomatensauce, Sahne u. Käse überbacken</div></div><div class="item-price">12,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">152</span><div class="item-name">Hähnchen Penne Funghi</div><div class="item-desc">mit Hähnchenfl., frische Champignons, Tomatensauce, Sahne u. Käse überbacken</div></div><div class="item-price">12,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">153</span><div class="item-name">Kebab Penne</div><div class="item-desc">mit Sahne, Kebabfleisch, Tomatensauce u. Käse überbacken</div></div><div class="item-price">12,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">154</span><div class="item-name">Penne al Forno</div><div class="item-desc">mit Fleischsoße, Kochschinken, Sahne u. Käse überbacken</div></div><div class="item-price">11,00 €</div></div>
+    </div>
+  </div>
+
+  <!-- ══ SALATE ══ -->
+  <!-- Bild 2: 50=5,00 | 51=7,50 | 52=10,00 | 53=9,00 | 54=11,00 | 55=10,00 | 56=10,00 | 57=10,00 -->
+  <div class="panel" id="p-salate">
+    <p class="note">Alle Salate werden mit Spezialsoße u. Brot serviert, auf Wunsch auch mit Öl-Essig.</p>
+    <div class="items" style="margin-top:2px">
+      <div class="item"><div class="item-left"><span class="item-num">50</span><div class="item-name">Krautsalat</div></div><div class="item-price">5,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">51</span><div class="item-name">Gemischter Salat</div><div class="item-desc">mit grünem Salat, Tomaten, Gurken, Zwiebeln u. Krautsalat</div></div><div class="item-price">7,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">52</span><div class="item-name">Insalata Tonno</div><div class="item-desc">mit grünem Salat, Tomaten, Gurken, Thunfisch, Mais, Paprika u. Zwiebeln</div></div><div class="item-price">10,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">53</span><div class="item-name">Bauernsalat</div><div class="item-desc">mit grünem Salat, Tomaten, Gurken, Zwiebeln u. Weichkäse</div></div><div class="item-price">9,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">54</span><div class="item-name">Salat Spezial</div><div class="item-desc">mit grünem Salat, Tomaten, Gurken, Zwiebeln, frischen Champignons, Hähnchenfl. u. Weichkäse</div></div><div class="item-price">11,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">55</span><div class="item-name">Kebabsalat</div><div class="item-desc">mit grünem Salat, Tomaten, Gurken, Paprika, Peperoni u. Kebabfleisch</div></div><div class="item-price">10,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">56</span><div class="item-name">Chefsalat</div><div class="item-desc">mit grünem Salat, Tomaten, Gurken, Oliven, Peperoni, Paprika, Mais, Zwiebeln u. Weichkäse</div></div><div class="item-price">10,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">57</span><div class="item-name">Hähnchensalat</div><div class="item-desc">mit grünem Salat, Tomaten, Gurken, Paprika, Peperoni u. Hähnchenfl.</div></div><div class="item-price">10,00 €</div></div>
+    </div>
+  </div>
+
+  <!-- ══ BEILAGEN ══ (aus Bild 1) -->
+  <div class="panel" id="p-beilagen">
+    <div class="items">
+      <div class="item"><div class="item-left"><span class="item-num">160</span><div class="item-name">Pommes</div></div><div class="item-price">3,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">161</span><div class="item-name">Reis</div></div><div class="item-price">3,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">162</span><div class="item-name">Soßen</div><div class="item-desc">Tzatziki, Joghurt, Cocktail, Curry, Scharf</div></div><div class="item-price">3,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">163</span><div class="item-name">Hollandaise</div></div><div class="item-price">3,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">164</span><div class="item-name">Tomatenketchup oder Mayonnaise</div></div><div class="item-price">0,50 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">165</span><div class="item-name">Portion Kebab / Hähnchenfl.</div></div><div class="item-price">kl. 7,00 €<br>gr. 12,00 €</div></div>
+      <div class="item"><div class="item-left"><span class="item-num">166</span><div class="item-name">Beilagen Salat</div></div><div class="item-price">5,00 €</div></div>
+    </div>
+  </div>
+
+  <!-- ══ GETRÄNKE ══ (aus Bild 1) -->
+  <div class="panel" id="p-getraenke">
+    <div class="items">
+      <div class="item"><div class="item-left"><div class="item-name">Coca Cola, Fanta, Sprite 0,33 l</div></div><div class="item-price">2,50 €</div></div>
+      <div class="item"><div class="item-left"><div class="item-name">Wasser 0,2 l</div></div><div class="item-price">2,00 €</div></div>
+      <div class="item"><div class="item-left"><div class="item-name">Ayran</div></div><div class="item-price">2,00 €</div></div>
+      <div class="item"><div class="item-left"><div class="item-name">Red Bull</div></div><div class="item-price">3,00 €</div></div>
+      <div class="item"><div class="item-left"><div class="item-name">Coca Cola, Fanta, Sprite Flasche 1 l</div></div><div class="item-price">3,50 €</div></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ÖFFNUNGSZEITEN -->
+<section id="zeiten">
+  <div class="sec">
+    <span class="sec-label reveal">Wann wir da sind</span>
+    <h2 class="sec-title reveal">Öffnungszeiten</h2>
+    <div class="gold-bar reveal"></div>
+    <div class="hours-grid reveal">
+      <div class="h-row tuesday-special" id="hr-di"><span class="day">🥙 Dienstag – Dönertag!</span><span class="time">11:30–14:00 · 17:00–23:00 · Döner 6€</span></div>
+      <div class="h-row" id="hr-woche"><span class="day">Montag – Freitag</span><span class="time">11:30–14:00 · 17:00–23:00 Uhr</span></div>
+      <div class="h-row" id="hr-sa"><span class="day">Samstag</span><span class="time">11:30–23:00 Uhr</span></div>
+      <div class="h-row" id="hr-so"><span class="day">Sonntag &amp; Feiertage</span><span class="time">11:30–22:00 Uhr</span></div>
+    </div>
+    <p style="margin-top:16px;font-size:.73rem;opacity:.27;font-weight:300;">* Öffnungszeiten können an gesetzlichen Feiertagen abweichen.</p>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<div style="background:var(--dark)">
+  <section id="kontakt">
+    <div class="sec">
+      <span class="sec-label reveal">Wir freuen uns auf euch</span>
+      <h2 class="sec-title reveal">Kontakt &amp; Anfahrt</h2>
+      <div class="gold-bar reveal"></div>
+      <div class="contact-grid">
+        <div class="ccard reveal-left">
+          <h3>Kontakt</h3>
+          <a href="tel:0447494187" class="cline"><span class="ci">📞</span>04474 / 94 18 73</a>
+          <a href="tel:0447494187" class="cline"><span class="ci">📞</span>04474 / 94 18 74</a>
+          <div class="cline"><span class="ci">📍</span>Kaiforter Str. 3, 49681 Garrel</div>
+          <a href="https://www.instagram.com/star.garrel/" target="_blank" class="cline"><span class="ci">📸</span>@star.garrel – wöchentliche Angebote</a>
+          <a href="https://www.facebook.com/star.garrel" target="_blank" class="cline"><span class="ci">📘</span>Star Garrel – wöchentliche Angebote</a>
+        </div>
+        <div class="map-box reveal-right">
+          <h3>Anfahrt</h3>
+          <div class="map-visual"><span class="map-pin">📍</span></div>
+          <div class="map-addr">Kaiforter Str. 3 · 49681 Garrel</div>
+          <a href="https://maps.google.com/?q=Kaiforter+Str.+3,+49681+Garrel" target="_blank" class="btn-outline">In Google Maps öffnen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <span class="foot-logo">STAR</span>
+  <span class="foot-tag">Pizza · Grill · Döner · Pasta · Garrel</span>
+  <div class="foot-links">
+    <a href="#about">Über uns</a>
+    <a href="#speisekarte">Speisekarte</a>
+    <a href="#zeiten">Öffnungszeiten</a>
+    <a href="#kontakt">Kontakt</a>
+    <a href="https://www.instagram.com/star.garrel/" target="_blank">Instagram</a>
+    <a href="https://www.facebook.com/star.garrel" target="_blank">Facebook</a>
+  </div>
+  <p class="foot-copy">© 2025 STAR Pizzeria Garrel · Kaiforter Str. 3 · 49681 Garrel · Tel. 04474 / 94 18 73</p>
+</footer>
+
+<script>
+  function showTab(name,btn){
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+    document.getElementById('p-'+name).classList.add('on');
+    btn.classList.add('on');
+  }
+  window.addEventListener('scroll',()=>{
+    document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>60);
+  });
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+  },{threshold:0.12});
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>obs.observe(el));
+  const pc=document.getElementById('particles');
+  for(let i=0;i<22;i++){
+    const p=document.createElement('div');
+    p.className='particle';
+    p.style.cssText=`left:${Math.random()*100}%;bottom:${Math.random()*20}%;width:${Math.random()*2+1}px;height:${Math.random()*2+1}px;animation-duration:${Math.random()*12+8}s;animation-delay:${Math.random()*10}s;`;
+    pc.appendChild(p);
+  }
+  const d=new Date().getDay();
+  if(d===2)document.getElementById('hr-di').classList.add('today');
+  else if(d===6)document.getElementById('hr-sa').classList.add('today');
+  else if(d===0)document.getElementById('hr-so').classList.add('today');
+  else if(d>=1&&d<=5&&d!==2)document.getElementById('hr-woche').classList.add('today');
+</script>
+</body>
+</html>
