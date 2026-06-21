@@ -179,6 +179,14 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.1);padding:
   footer{padding:38px 20px}
 }
 </style>
+<script>
+  // Verhindert automatisches Scrollen/Springen beim Laden der Seite
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  window.scrollTo(0, 0);
+  window.addEventListener('load', () => window.scrollTo(0, 0));
+</script>
 </head>
 <body>
 
@@ -303,15 +311,15 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.1);padding:
   <div class="gold-bar reveal"></div>
 
   <div class="tabs">
-    <button class="tab on"  onclick="showTab('vorspeisen',this)">Vorspeisen (1–24)</button>
-    <button class="tab"     onclick="showTab('tuerkisch',this)">Türk. Grill (40–45)</button>
-    <button class="tab"     onclick="showTab('salate',this)">Salate (50–57)</button>
-    <button class="tab"     onclick="showTab('pizza',this)">Pizza (70–107)</button>
-    <button class="tab"     onclick="showTab('calzone',this)">Calzone & Rollos (110–127)</button>
-    <button class="tab"     onclick="showTab('baguette',this)">Baguette (130–136)</button>
-    <button class="tab"     onclick="showTab('nudeln',this)">Nudeln (140–154)</button>
-    <button class="tab"     onclick="showTab('ueberbacken',this)">Überbacken (25–34)</button>
-    <button class="tab"     onclick="showTab('beilagen',this)">Beilagen (160–166)</button>
+    <button class="tab on"  onclick="showTab('vorspeisen',this)">Vorspeisen</button>
+    <button class="tab"     onclick="showTab('tuerkisch',this)">Türk. Grill</button>
+    <button class="tab"     onclick="showTab('salate',this)">Salate</button>
+    <button class="tab"     onclick="showTab('pizza',this)">Pizza</button>
+    <button class="tab"     onclick="showTab('calzone',this)">Calzone & Rollos</button>
+    <button class="tab"     onclick="showTab('baguette',this)">Baguette</button>
+    <button class="tab"     onclick="showTab('nudeln',this)">Nudeln</button>
+    <button class="tab"     onclick="showTab('ueberbacken',this)">Überbacken</button>
+    <button class="tab"     onclick="showTab('beilagen',this)">Beilagen</button>
     <button class="tab"     onclick="showTab('getraenke',this)">Getränke</button>
   </div>
 
